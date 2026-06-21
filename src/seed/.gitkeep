@@ -1,0 +1,3 @@
+# Database seed scripts live here.
+# Example: seedUsers.js, seedProducts.js
+# Run individually: node src/seed/seedUsers.js

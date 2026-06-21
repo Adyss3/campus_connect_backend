@@ -1,0 +1,3 @@
+# Mongoose models live here.
+# Each collection gets its own model file.
+# Example: User.js, Post.js, Product.js

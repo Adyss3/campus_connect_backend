@@ -1,0 +1,3 @@
+# Request validation schemas live here.
+# Use joi, zod, or express-validator.
+# Example: authValidation.js, userValidation.js

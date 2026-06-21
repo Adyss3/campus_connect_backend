@@ -1,0 +1,3 @@
+# Business logic services live here.
+# Keep DB queries and business rules out of controllers.
+# Example: authService.js, emailService.js, uploadService.js
