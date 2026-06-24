@@ -3,6 +3,8 @@ const router = express.Router();
 
 const {
   register,
+  registerStudent,
+  registerCampus,
   login,
   logout,
   getMe,
@@ -99,6 +101,94 @@ const {
  *       400:
  *         description: Validation error or user already exists
  */
+/**
+ * @swagger
+ * /api/auth/signup/student:
+ *   post:
+ *     summary: Register a new student (MTU email required)
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - firstName
+ *               - email
+ *               - password
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: John
+ *               lastName:
+ *                 type: string
+ *                 example: Doe
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: johndoe@mtu.edu.ng
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: secret123
+ *     responses:
+ *       201:
+ *         description: Student account created successfully
+ *       400:
+ *         description: Invalid MTU email or user exists
+ */
+router.post('/signup/student', registerStudent);
+
+/**
+ * @swagger
+ * /api/auth/signup/campus:
+ *   post:
+ *     summary: Register a campus user (Staff, Entrepreneur, Organization)
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - firstName
+ *               - email
+ *               - password
+ *               - role
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: Jane
+ *               lastName:
+ *                 type: string
+ *                 example: Smith
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: jane@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: secret123
+ *               role:
+ *                 type: string
+ *                 enum: [Staff, Entrepreneur, Organization]
+ *                 example: Entrepreneur
+ *               university:
+ *                 type: string
+ *                 example: Mountain Top University
+ *     responses:
+ *       201:
+ *         description: Campus account created successfully
+ *       400:
+ *         description: Invalid role or user exists
+ */
+router.post('/signup/campus', registerCampus);
+
 router.post('/register', registerValidation, validate, register);
 
 /**

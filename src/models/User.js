@@ -34,8 +34,26 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['Student', 'Entrepreneur', 'Admin'],
+      enum: ['Student', 'Entrepreneur', 'Staff', 'Organization', 'Admin'],
       default: 'Student',
+    },
+    accountType: {
+      type: String,
+      enum: ['Student', 'Staff', 'Entrepreneur', 'Organization', 'Admin'],
+      default: 'Student',
+    },
+    isVerifiedStudent: {
+      type: Boolean,
+      default: false,
+    },
+    hasStore: {
+      type: Boolean,
+      default: false,
+    },
+    storeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Store',
+      default: null,
     },
     university: {
       type: String,
@@ -59,7 +77,6 @@ const userSchema = new mongoose.Schema(
     },
     department: {
       type: String,
-      required: [true, 'Department is required'],
       trim: true,
     },
     isVerified: {

@@ -49,10 +49,20 @@ const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
 const verificationRoutes = require('./verificationRoutes');
 const conversationRoutes = require('./conversationRoutes');
+const feedRoutes = require('./feedRoutes');
+const storeRoutes = require('./storeRoutes');
+const productRoutes = require('./productRoutes');
+const jobRoutes = require('./jobRoutes');
+const eventRoutes = require('./eventRoutes');
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/verification', verificationRoutes);
 router.use('/conversations', conversationRoutes);
+router.use('/feed', feedRoutes);
+router.use('/stores', storeRoutes);
+router.use('/products', productRoutes);
+router.use('/jobs', jobRoutes);
+router.use('/events', eventRoutes);
 
 module.exports = router;

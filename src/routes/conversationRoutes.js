@@ -12,9 +12,9 @@ const { protect, requireVerified } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// All conversation routes require authentication and verification
+// All conversation routes require authentication
 router.use(protect);
-router.use(requireVerified);
+// Note: requireVerified removed — messaging is open to all authenticated users
 
 /**
  * @swagger

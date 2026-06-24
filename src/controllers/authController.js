@@ -13,7 +13,117 @@ const generateToken = (id) => {
 };
 
 /**
- * @desc    Register a new user
+ * @desc    Register a new student (MTU email required)
+ * @route   POST /api/auth/signup/student
+ * @access  Public
+ */
+const registerStudent = async (req, res, next) => {
+  try {
+    const { firstName, lastName, email, password } = req.body;
+
+    // Validate MTU email format: firstnamelastname@mtu.edu.ng
+    const mtuEmailPattern = /^[a-z]+[a-z]+@mtu\.edu\.ng$/i;
+    if (!mtuEmailPattern.test(email)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Please use a valid MTU student email format: firstnamelastname@mtu.edu.ng'
+      });
+    }
+
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({
+        success: false,
+        error: 'User already exists with this email',
+      });
+    }
+
+    // Create student user
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      role: 'Student',
+      accountType: 'Student',
+      isVerifiedStudent: true,
+      university: 'Mountain Top University'
+    });
+
+    const safeUser = user.toSafeObject();
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Student account created successfully',
+      data: {
+        user: safeUser,
+        token,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Register a new campus user (Staff, Entrepreneur, Organization)
+ * @route   POST /api/auth/signup/campus
+ * @access  Public
+ */
+const registerCampus = async (req, res, next) => {
+  try {
+    const { firstName, lastName, email, password, role, university } = req.body;
+
+    // Validate role
+    const allowedRoles = ['Staff', 'Entrepreneur', 'Organization'];
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid role. Must be Staff, Entrepreneur, or Organization'
+      });
+    }
+
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({
+        success: false,
+        error: 'User already exists with this email',
+      });
+    }
+
+    // Create campus user
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      accountType: role,
+      isVerifiedStudent: false,
+      university: university || 'Mountain Top University'
+    });
+
+    const safeUser = user.toSafeObject();
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Campus account created successfully',
+      data: {
+        user: safeUser,
+        token,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Register a new user (Generic - for backward compatibility)
  * @route   POST /api/auth/register
  * @access  Public
  */
@@ -46,6 +156,7 @@ const register = async (req, res, next) => {
       email,
       password,
       role: role || 'Student',
+      accountType: role || 'Student',
       university,
       matricNumber,
     });
@@ -166,6 +277,8 @@ const getMe = async (req, res, next) => {
 
 module.exports = {
   register,
+  registerStudent,
+  registerCampus,
   login,
   logout,
   getMe,
