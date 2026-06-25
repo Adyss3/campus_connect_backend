@@ -3,6 +3,56 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /api:
+ *   get:
+ *     summary: API Home
+ *     description: Returns API information and available endpoints
+ *     tags: [General]
+ *     security: []
+ *     responses:
+ *       200:
+ *         description: API information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Welcome to Campus Connect API
+ *                 version:
+ *                   type: string
+ *                   example: "1.0.0"
+ *                 endpoints:
+ *                   type: object
+ */
+router.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to Campus Connect API',
+    version: '1.0.0',
+    description: 'University campus marketplace and networking platform',
+    endpoints: {
+      health: '/api/health',
+      documentation: '/api-docs',
+      auth: '/api/auth',
+      stores: '/api/stores',
+      products: '/api/products',
+      jobs: '/api/jobs',
+      events: '/api/events',
+      users: '/api/users',
+      conversations: '/api/conversations'
+    },
+    repository: 'https://github.com/your-username/campus-connect',
+    contact: 'support@campusconnect.com'
+  });
+});
+
+/**
+ * @swagger
  * /api/health:
  *   get:
  *     summary: Health check

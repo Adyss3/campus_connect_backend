@@ -121,6 +121,25 @@ app.get('/api-docs.json', (req, res) => {
 app.use('/api', routes);
 
 // ─────────────────────────────────────────────
+// Root route - API welcome message
+// ─────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: '🎓 Campus Connect API',
+    description: 'University campus marketplace and networking platform',
+    version: '1.0.0',
+    status: 'online',
+    endpoints: {
+      api: '/api',
+      health: '/api/health',
+      docs: '/api-docs'
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ─────────────────────────────────────────────
 // 404 — must come after all valid routes
 // ─────────────────────────────────────────────
 app.use(notFound);
